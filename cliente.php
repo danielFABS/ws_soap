@@ -6,8 +6,6 @@ try{
         'uri'=>'urn:departamento',
         'trace' => true 
     );
-
-
     $client = new SoapClient(null,$opciones);
     if(isset($_GET["idz"])){
         $idz = intval($_GET["idz"]);
@@ -16,13 +14,13 @@ try{
         }
     }else{
         $respuestas = $client->obtenerDepartamentos();
+        var_dump($respuestas);
     }
-
     $arreglo = array();
-
     foreach($respuestas as $respuesta){
         $arreglo[]['departamento'] = array(
-            "id"=> $respuesta["departamento"]
+            "id"=> $respuesta["id"],
+            "nombre" => $respuesta["departamento"]
         );
     }
     $arr_headers = getallheaders();
@@ -33,12 +31,9 @@ try{
     }elseif($arr_headers["Accept"] == "aplication/json"){
         header("Content-Type: Application/json");
         echo(json_decode($respuestas));
-
     }else{
         echo("ESPECIFIQUE EL FORMATO DE DATOS QUE USTED ESPERA");
     }
-
-
     }
 catch(Exception $e){
     echo('Error:'.$e->getMessage());
